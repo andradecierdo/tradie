@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "status": "ACTIVE",
+    "dateCreated": "09/09/2023 04:24:12 GMT+1200",
+    "description": "Job description sample 1",
+    "tradieId": "1",
+    "customerId": "1"
+  },
+  {
+    "id": "2",
+    "status": "SCHEDULED",
+    "dateCreated": "10/09/2023 05:24:12 GMT+1200",
+    "description": "Job description sample 2",
+    "tradieId": "1",
+    "customerId": "2"
+  },
+  {
+    "id": "3",
+    "status": "COMPLETED",
+    "dateCreated": "08/09/2023 01:31:12 GMT+1200",
+    "description": "Job description sample 3",
+    "tradieId": "2",
+    "customerId": "1"
+  }
+]

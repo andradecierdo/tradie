@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "firstName": "John",
+    "lastName": "Doe",
+    "address": "New York, USA",
+    "phoneNumber": "02040123456"
+  },
+  {
+    "id": "2",
+    "firstName": "Juan",
+    "lastName": "Dela Cruz",
+    "address": "Manila, PH",
+    "phoneNumber": "09170123456"
+  },
+  {
+    "id": "3",
+    "firstName": "Andrade",
+    "lastName": "Decierdo",
+    "address": "Auckland, NZ",
+    "phoneNumber": "09170123456"
+  }
+]
