@@ -21,6 +21,7 @@ type TradieJobsContext = {
   setNotes: (notes: INote[]) => void
   getNotesByJob: (jobId: string) => INote[]
   getJob: (jobId: string) => IJob | null
+  jobs: IJob[]
 }
 
 const TradieJobsContext = createContext({} as TradieJobsContext)
@@ -46,8 +47,9 @@ export function TradieJobsProvider({ children }: TradieJobsProviderProps) {
   const addNote = (noteInput: INoteInput): void => {
     const id = notes.length.toString()
     const newNote = noteDataService.createModel(id, noteInput)
-    setNotes([...notes, newNote])
-    noteDataService.saveData(notes)
+    const newNotes = [...notes, newNote]
+    setNotes(newNotes)
+    noteDataService.saveData(newNotes)
   }
 
   const getNotesByJob = (jobId: string): INote[] => {
@@ -60,6 +62,7 @@ export function TradieJobsProvider({ children }: TradieJobsProviderProps) {
     setTradie,
     getJob,
     getNotesByJob,
+    jobs,
     addNote,
     notes,
     setNotes,
