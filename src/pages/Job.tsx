@@ -1,17 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Button, Card, Col, Container, Form, ListGroup, Row, Table} from 'react-bootstrap'
+import { Button, Card, Col, Container, Dropdown, Form, ListGroup, Row, Table } from 'react-bootstrap'
 import { useTradieJobs } from '../context/TradieJobsContext'
-import { IJob, INote} from '../models'
+import { IJob, INote, JobStatus } from '../models'
 import { EditableNote } from '../components/EditableNote'
 import { sortByProperty, statusColor, statusTextDisplay } from '../utilities'
+import { ChangeStatusConfirmation } from '../components/ChangeStatusConfirmation'
+
+const STATUS_OPTIONS: JobStatus[] = [
+  JobStatus.Completed,
+  JobStatus.Scheduled,
+  JobStatus.Active,
+  JobStatus.Invoicing,
+  JobStatus.ToPriced,
+]
 
 export function Job() {
   const [jobNotes, setJobNotes] = useState([] as INote[])
   const [job, setJob] = useState({} as IJob | null)
   const [note, setNote] = useState('')
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [statusToChange, setStatusToChange] = useState<JobStatus>(JobStatus.Active)
 
-  const { getJob, getNotesByJob, addNote, notes, setNotes, tradie } = useTradieJobs()
+  const { getJob, getNotesByJob, addNote, notes, setNotes, tradie, updateJobStatus, jobs } = useTradieJobs()
   const navigate = useNavigate()
   const { id } = useParams()
 
@@ -20,7 +31,7 @@ export function Job() {
       setJob(getJob(id))
       setJobNotes(getNotesByJob(id))
     }
-  }, [id, notes])
+  }, [id, notes, jobs])
 
   if (!job || job.tradieId !== tradie.id) {
     navigate('/jobs')
@@ -48,7 +59,22 @@ export function Job() {
     setNote(e.target.value)
   }
 
+  const handleStatusChange = (status: JobStatus): void => {
+    setStatusToChange(status)
+    setShowConfirmation(true)
+  }
+
+  const handleCloseDialog = (): void => {
+    setShowConfirmation(false)
+  }
+
+  const handleConfirmDialog = (): void => {
+    setShowConfirmation(false)
+    updateJobStatus(job!.id, statusToChange)
+  }
+
   const sortedNotes = sortByProperty(jobNotes, 'dateCreated')
+  const statusOptions = STATUS_OPTIONS.filter(status => status !== job!.status)
 
   return (
     <Container className="p-5">
@@ -60,8 +86,23 @@ export function Job() {
               <tbody>
               <tr>
                 <td className="bg-body-secondary">Status</td>
-                <td style={{ backgroundColor: statusColor(job!.status)} }>
-                  { statusTextDisplay(job!.status) }
+                <td className="flex justify-content-between">
+                  <Dropdown>
+                    <Dropdown.Toggle style={{ backgroundColor: statusColor(job!.status)}}>
+                      { statusTextDisplay(job!.status) }
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      { statusOptions.map(status => {
+                        return (
+                          <Dropdown.Item
+                            onClick={() => handleStatusChange(status)}
+                            style={{ backgroundColor: statusColor(status)} }>
+                            { statusTextDisplay(status) }
+                          </Dropdown.Item>
+                        )
+                      })}
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </td>
               </tr>
               <tr>
@@ -94,7 +135,7 @@ export function Job() {
           <Container>
             <h5>Notes</h5>
             <ListGroup>
-              {sortedNotes.map((note, index) => {
+              { sortedNotes.map((note, index) => {
                 return (
                   <ListGroup.Item key={index}>
                     <EditableNote
@@ -127,6 +168,11 @@ export function Job() {
           </Container>
         </Col>
       </Row>
+      <ChangeStatusConfirmation
+        status={statusToChange}
+        show={showConfirmation}
+        onCancel={handleCloseDialog}
+        onConfirm={handleConfirmDialog} />
     </Container>
   )
 }

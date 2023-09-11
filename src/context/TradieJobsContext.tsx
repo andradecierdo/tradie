@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react'
-import { IJob, INote, INoteInput, ITradie } from '../models'
+import { IJob, INote, INoteInput, ITradie, JobStatus } from '../models'
 import { TradieDataService } from '../storage/TradieDataService'
 import { JobDataService } from '../storage/JobDataService'
 import { NoteDataService } from '../storage/NoteDataService'
@@ -21,6 +21,7 @@ type TradieJobsContext = {
   setNotes: (notes: INote[]) => void
   getNotesByJob: (jobId: string) => INote[]
   getJob: (jobId: string) => IJob | null
+  updateJobStatus: (jobId: string, status: JobStatus) => void
   jobs: IJob[]
 }
 
@@ -56,6 +57,12 @@ export function TradieJobsProvider({ children }: TradieJobsProviderProps) {
     return notes.filter(note => note.jobId === jobId)
   }
 
+  const updateJobStatus = (jobId: string, status: JobStatus): void => {
+    const newJobs = jobs.map(job => job.id === jobId ? { ...job, status: status } : job)
+    setJobs(newJobs)
+    jobDataService.saveData(newJobs)
+  }
+
   const value: TradieJobsContext = {
     tradie,
     tradies,
@@ -66,6 +73,7 @@ export function TradieJobsProvider({ children }: TradieJobsProviderProps) {
     addNote,
     notes,
     setNotes,
+    updateJobStatus,
   }
 
   return (
