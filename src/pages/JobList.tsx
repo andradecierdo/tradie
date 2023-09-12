@@ -39,7 +39,7 @@ export function JobList() {
   const [tradieJobs, setTradieJobs] = useState([] as IJob[])
   const [searchKey, setSearchKey] = useState('')
   const [sortProperty, setSortProperty] = useState('dateCreated')
-  const [sortOrder, setSortOrder] = useState(0)
+  const [sortOrder, setSortOrder] = useState(0) // Desc = 0, Asc = 1
   const { tradie, jobs } = useTradieJobs()
 
   const navigate = useNavigate()

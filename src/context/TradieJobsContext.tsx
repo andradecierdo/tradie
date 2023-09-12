@@ -37,6 +37,7 @@ export function TradieJobsProvider({ children }: TradieJobsProviderProps) {
   const noteDataService = new NoteDataService(new LocaleStorageService<INote>())
 
   const [tradie, setTradie] = useState({} as ITradie)
+  // Initializes data from the local storage if exist, otherwise use the given json data
   const [tradies] = useState<ITradie[]>(tradieDataService.initialize(tradiesJsonData))
   const [notes, setNotes] = useState<INote[]>(noteDataService.initialize(notesJsonData))
   const [jobs, setJobs] = useState<IJob[]>(jobDataService.initialize(jobsJsonData))
@@ -46,16 +47,19 @@ export function TradieJobsProvider({ children }: TradieJobsProviderProps) {
   }
 
   const addNote = (noteInput: INoteInput): void => {
+    // It is safe to use the notes length as the ID since we do not delete a note.
     const id = (notes.length + 1).toString()
     const newNote = noteDataService.createModel(id, noteInput)
     const newNotes = [...notes, newNote]
     setNotes(newNotes)
+    // After adding a note, save the updated list of notes to the storage
     noteDataService.saveData(newNotes)
   }
 
   const updateNote = (noteId: string, content: string): void => {
     const updatedNotes = notes.map(note => note.id === noteId ? { ...note, content } : note)
     setNotes(updatedNotes)
+    // After adding a note, save the updated list of notes to the storage
     noteDataService.saveData(updatedNotes)
   }
 
@@ -66,6 +70,7 @@ export function TradieJobsProvider({ children }: TradieJobsProviderProps) {
   const updateJobStatus = (jobId: string, status: JobStatus): void => {
     const newJobs = jobs.map(job => job.id === jobId ? { ...job, status: status } : job)
     setJobs(newJobs)
+    // After updating a job, save the updated list of jobs to the storage
     jobDataService.saveData(newJobs)
   }
 

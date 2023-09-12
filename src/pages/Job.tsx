@@ -70,7 +70,7 @@ export function Job() {
     updateJobStatus(job!.id, statusToChange)
   }
 
-  const sortedNotes = sortByProperty(jobNotes, 'dateCreated')
+  const sortedNotes = sortByProperty(jobNotes, 'dateCreated') // Set default sorting by 'dateCreated'
   const statusOptions = STATUS_OPTIONS.filter(status => status !== job?.status)
 
   return (
