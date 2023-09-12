@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1",
+    "status": "ACTIVE",
+    "dateCreated": "09/09/2023 04:24:12 GMT+1200",
+    "description": "Website design",
+    "tradieId": "1",
+    "customerId": "1"
+  },
+  {
+    "id": "2",
+    "status": "SCHEDULED",
+    "dateCreated": "09/10/2023 05:24:12 GMT+1200",
+    "description": "Database migration",
+    "tradieId": "1",
+    "customerId": "2"
+  },
+  {
+    "id": "3",
+    "status": "COMPLETED",
+    "dateCreated": "09/08/2023 01:31:12 GMT+1200",
+    "description": "Setup CI / CD pipeline",
+    "tradieId": "1",
+    "customerId": "1"
+  },
+  {
+    "id": "4",
+    "status": "TO_PRICED",
+    "dateCreated": "09/08/2023 01:31:12 GMT+1200",
+    "description": "Implement Home page",
+    "tradieId": "1",
+    "customerId": "3"
+  },
+  {
+    "id": "5",
+    "status": "INVOICING",
+    "dateCreated": "09/09/2023 04:31:12 GMT+1200",
+    "description": "Database design",
+    "tradieId": "2",
+    "customerId": "1"
+  },
+  {
+    "id": "6",
+    "status": "ACTIVE",
+    "dateCreated": "09/09/2023 01:31:12 GMT+1200",
+    "description": "Setup production environment",
+    "tradieId": "2",
+    "customerId": "2"
+  }
+]
