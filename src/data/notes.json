@@ -3,24 +3,30 @@
     "id": "1",
     "jobId": "1",
     "dateCreated": "09/10/2023 08:24:12 GMT+1200",
-    "content": "Note 1"
+    "content": "Setup color palette"
   },
   {
     "id": "2",
     "jobId": "1",
     "dateCreated": "09/10/2023 10:24:12 GMT+1200",
-    "content": "Note 2"
+    "content": "Gather requirements"
   },
   {
     "id": "3",
     "jobId": "2",
     "dateCreated": "09/11/2023 03:24:12 GMT+1200",
-    "content": "Note 3"
+    "content": "Determine database tables"
   },
   {
     "id": "4",
+    "jobId": "2",
+    "dateCreated": "09/10/2023 01:24:12 GMT+1200",
+    "content": "Design database"
+  },
+  {
+    "id": "5",
     "jobId": "3",
     "dateCreated": "09/10/2023 01:24:12 GMT+1200",
-    "content": "Note 4"
+    "content": "Setup CI / CD script"
   }
 ]
