@@ -17,25 +17,25 @@ const STATUS_OPTIONS: JobStatus[] = [
 
 export function Job() {
   const [jobNotes, setJobNotes] = useState([] as INote[])
-  const [job, setJob] = useState({} as IJob | null)
+  const [job, setJob] = useState<IJob>({} as IJob)
   const [note, setNote] = useState('')
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [statusToChange, setStatusToChange] = useState<JobStatus>(JobStatus.Active)
 
-  const { getJob, getNotesByJob, addNote, notes, setNotes, tradie, updateJobStatus, jobs } = useTradieJobs()
+  const { getJob, getJobNotes, addNote, notes, updateNote, updateJobStatus, jobs } = useTradieJobs()
   const navigate = useNavigate()
   const { id } = useParams()
 
   useEffect(() => {
     if (id) {
-      setJob(getJob(id))
-      setJobNotes(getNotesByJob(id))
+      if (!getJob(id)) {
+        navigate('/jobs')
+      } else {
+        setJob(getJob(id)!)
+        setJobNotes(getJobNotes(id))
+      }
     }
   }, [id, notes, jobs])
-
-  if (!job || job.tradieId !== tradie.id) {
-    navigate('/jobs')
-  }
 
   const addNewNote = () => {
     const newNote = {
@@ -47,11 +47,8 @@ export function Job() {
     setNote('')
   }
 
-  const handleSaveNote = (noteId: string, newContent: string) => {
-    const updatedNotes = notes.map(note => {
-      return note.id === noteId ? { ...note, content: newContent } : note
-    })
-    setNotes(updatedNotes)
+  const handleSaveNote = (noteId: string, content: string) => {
+    updateNote(noteId, content)
   }
 
   const handleNoteChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -74,7 +71,7 @@ export function Job() {
   }
 
   const sortedNotes = sortByProperty(jobNotes, 'dateCreated')
-  const statusOptions = STATUS_OPTIONS.filter(status => status !== job!.status)
+  const statusOptions = STATUS_OPTIONS.filter(status => status !== job?.status)
 
   return (
     <Container className="p-5">
@@ -92,9 +89,10 @@ export function Job() {
                       { statusTextDisplay(job!.status) }
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      { statusOptions.map(status => {
+                      { statusOptions.map((status, index) => {
                         return (
                           <Dropdown.Item
+                            key={index}
                             onClick={() => handleStatusChange(status)}
                             style={{ backgroundColor: statusColor(status)} }>
                             { statusTextDisplay(status) }

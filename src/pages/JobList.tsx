@@ -43,11 +43,11 @@ export function JobList() {
   const { tradie, jobs } = useTradieJobs()
 
   const navigate = useNavigate()
-  if (!tradie?.id) {
-    navigate('/')
-  }
 
   useEffect(() => {
+    if (!tradie?.id) {
+      navigate('/')
+    }
     setTradieJobs(jobs.filter(job => job.tradieId === tradie.id))
   }, [tradie])
 

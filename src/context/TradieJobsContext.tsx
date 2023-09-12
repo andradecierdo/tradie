@@ -18,8 +18,8 @@ type TradieJobsContext = {
   setTradie: (tradie: ITradie) => void
   notes: INote[]
   addNote: (noteInput: INoteInput) => void
-  setNotes: (notes: INote[]) => void
-  getNotesByJob: (jobId: string) => INote[]
+  updateNote: (id: string, content: string) => void
+  getJobNotes: (jobId: string) => INote[]
   getJob: (jobId: string) => IJob | null
   updateJobStatus: (jobId: string, status: JobStatus) => void
   jobs: IJob[]
@@ -37,7 +37,7 @@ export function TradieJobsProvider({ children }: TradieJobsProviderProps) {
   const noteDataService = new NoteDataService(new LocaleStorageService<INote>())
 
   const [tradie, setTradie] = useState({} as ITradie)
-  const [tradies, setTradies] = useState<ITradie[]>(tradieDataService.initialize(tradiesJsonData))
+  const [tradies] = useState<ITradie[]>(tradieDataService.initialize(tradiesJsonData))
   const [notes, setNotes] = useState<INote[]>(noteDataService.initialize(notesJsonData))
   const [jobs, setJobs] = useState<IJob[]>(jobDataService.initialize(jobsJsonData))
 
@@ -46,14 +46,20 @@ export function TradieJobsProvider({ children }: TradieJobsProviderProps) {
   }
 
   const addNote = (noteInput: INoteInput): void => {
-    const id = notes.length.toString()
+    const id = (notes.length + 1).toString()
     const newNote = noteDataService.createModel(id, noteInput)
     const newNotes = [...notes, newNote]
     setNotes(newNotes)
     noteDataService.saveData(newNotes)
   }
 
-  const getNotesByJob = (jobId: string): INote[] => {
+  const updateNote = (noteId: string, content: string): void => {
+    const updatedNotes = notes.map(note => note.id === noteId ? { ...note, content } : note)
+    setNotes(updatedNotes)
+    noteDataService.saveData(updatedNotes)
+  }
+
+  const getJobNotes = (jobId: string): INote[] => {
     return notes.filter(note => note.jobId === jobId)
   }
 
@@ -68,11 +74,11 @@ export function TradieJobsProvider({ children }: TradieJobsProviderProps) {
     tradies,
     setTradie,
     getJob,
-    getNotesByJob,
+    getJobNotes,
     jobs,
     addNote,
+    updateNote,
     notes,
-    setNotes,
     updateJobStatus,
   }
 
