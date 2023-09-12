@@ -26,7 +26,9 @@ This is a job management app
 ## How to run the App
 
 In the project directory, you can run:
+### `npm install`
 
+To start the app, run:
 ### `npm start`
 
 Runs the app in the development mode.\
