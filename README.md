@@ -1,24 +1,25 @@
 # Tradie App
 This is a job management app
 
-##Features
-####Home Page
+## Features
+
+#### Home Page
  - Shows the list of Tradies
  - Allows the user to select a Tradie
  
-####Job List Page
+#### Job List Page
  - Shows the list Jobs of the selected Tradie
  - Allows the user to view the Job details
  - Allows the user to search by Job `Description`
  - Allows the user to sort Jobs by table column
  
-####Job Details Page
+#### Job Details Page
  - Shows the details of the selected Job
  - Allows the user to add notes to the Job
  - Allows the user to edit existing Job notes
  - Allows the user to change Job status
  
-####Data and Saving
+#### Data and Saving
  - Initializes data using static json files if no local storage data available
  - Any changes will be saved to the local storage
 
