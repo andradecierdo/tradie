@@ -13,8 +13,6 @@ export interface IStorageService<D, I, S> {
  * It initializes, retrieves and saves data to the ILocaleStorage.
  */
 export abstract class StorageService<D, I, S> implements IStorageService<D, I, S> {
-  protected data: D[] = []
-
   constructor(private localeStorage: ILocalStorage<D>) { }
 
   abstract getStorageKey(): string
