@@ -37,6 +37,8 @@ const tableColumns: ITableColumnSort[] = [
 
 export function JobList() {
   const [tradieJobs, setTradieJobs] = useState([] as IJob[])
+  const [filteredJobs, setFilteredJobs] = useState([] as IJob[])
+  const [sortedJobs, setSortedJobs] = useState([] as IJob[])
   const [searchKey, setSearchKey] = useState('')
   const [sortProperty, setSortProperty] = useState('dateCreated')
   const [sortOrder, setSortOrder] = useState(0) // Desc = 0, Asc = 1
@@ -50,6 +52,14 @@ export function JobList() {
     }
     setTradieJobs(jobs.filter(job => job.tradieId === tradie.id))
   }, [tradie])
+
+  useEffect(() => {
+    setFilteredJobs(tradieJobs.filter(job => job.description.toLowerCase().includes(searchKey.toLowerCase())))
+  }, [searchKey, tradieJobs])
+
+  useEffect(() => {
+    setSortedJobs(sortByProperty(filteredJobs, sortProperty, sortOrder === 0))
+  }, [sortProperty, filteredJobs, sortOrder])
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault()
@@ -71,12 +81,6 @@ export function JobList() {
   const redirectToJobDetails = (jobId: string) => {
     navigate(`/jobs/${jobId}`)
   }
-
-  const filteredJobs = tradieJobs.filter(job => {
-    return job.description.toLowerCase().includes(searchKey.toLowerCase())
-  })
-
-  const sortedJobs = sortByProperty(filteredJobs, sortProperty, sortOrder === 0)
 
   const sortIcon = (property: string) => {
     return property === sortProperty ? sortOrder === 0 ? <SortDown /> : <SortUp /> : ''
